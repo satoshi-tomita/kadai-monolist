@@ -29,7 +29,7 @@ class ItemsController extends Controller
         $items = [];
         if ($keyword) {
             $client = new \RakutenRws_Client();
-            $client->setAppliationId(env('RAKUTEN_APPLICATION_ID'));
+            $client->setApplicationId(env('RAKUTEN_APPLICATION_ID'));
             
             $rws_response = $client->execute('IchibaItemSearch', [
                 'keyword' => $keyword,
@@ -47,7 +47,7 @@ class ItemsController extends Controller
             }
         }
         
-        return view('items.create'. [
+        return view('items.create', [
             'keyword' => $keyword,
             'items' => $items,
         ]);
@@ -72,7 +72,15 @@ class ItemsController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = Item::find($id);
+        $want_users = $item->want_users;
+        $have_users = $item->have_users;
+        
+        return view('items.show', [
+            'item' => $item,
+            'want_users' => $want_users,
+            'have_users' => $have_users,
+        ]);
     }
 
     /**
